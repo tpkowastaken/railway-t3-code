@@ -3,6 +3,9 @@ FROM node:24-bookworm
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/data/home
 ENV WORKSPACE_DIR=/data/workspaces
+# Railway runs the container as root. Claude Code refuses
+# --dangerously-skip-permissions as root unless it is told it is sandboxed.
+ENV IS_SANDBOX=1
 
 RUN apt-get update && apt-get install -y \
     git \
