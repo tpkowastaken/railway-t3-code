@@ -1,0 +1,27 @@
+name: Bump versions
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update the Dockerfile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/bump-versions.sh
+      - name: Build and publish
+        run: |
+          git diff --quiet && { echo "Already up to date"; exit 0; }
+          git diff
+          # The build runs every tool's --version, so a bad release never reaches main.
+          docker build .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Bump pinned versions"
+          git push
