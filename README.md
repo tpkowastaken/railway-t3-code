@@ -12,21 +12,6 @@ https://github.com/tpkowastaken/railway-t3-code
 2. Once the application is deployed, copy **T3_SETUP_PASSWORD** from the service's Variables tab
 3. Open the public link from railway (click the instance, then Settings, and it's under Networking). Until a browser is paired, the link opens the **/railway-pair** page, which also explains where to find the password
 4. Enter that password, then click **Pair this browser**. For your phone, scan the QR code in the T3 Code app (Settings → Environments → Add). Reload the page for a new link for each device
-5. After that press ctrl + j or cmd + j do 
-
-```
-codex login --device-auth
-```
-
-to login to the codex cli or
-
-```
-claude auth login
-```
-
-for claude.
-
-You are free to setup other developer tools, mcps and connectors as you wish. I recommend using claude or codex to setup the other tools. You can also set the variables in env to authenticate other ways
 
 ## Agent configs
 
