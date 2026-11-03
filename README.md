@@ -15,7 +15,7 @@ https://github.com/tpkowastaken/railway-t3-code
 
 ## Agent configs
 
-Because of it running in a container the agents are instructed to install tools in a way that persists. The instructions are at [default global agent.md](default%20global%20agent.md) - placed at the top of the global instructions for Claude Code, Codex, OpenCode, Antigravity/Gemini, Pi and fx. Your own text in those files, outside the marked block, is kept.
+Because of it running in a container the agents are instructed to install tools in a way that persists. The instructions are at [default global agent.md](default%20global%20agent.md) - placed at the top of the global instructions for Claude Code, Codex, OpenCode, Antigravity/Gemini, Pi and fx. Your own text in those files, outside the marked block, is kept. Claude’s `~/.claude/CLAUDE.md` is symlinked to `~/.codex/AGENTS.md`, so both agents share edits. On migration, existing instructions from both files are preserved in the shared file, and Claude’s original file is saved as `CLAUDE.md.before-shared` (with a numbered suffix if needed).
 
 ## Remote Docker
 
