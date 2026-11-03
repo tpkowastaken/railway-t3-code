@@ -27,6 +27,35 @@ with open(sys.argv[1]) as f:
     block = f"{BEGIN}\n{f.read().strip()}\n{END}\n"
 
 home = os.path.expanduser("~")
+
+# Claude and Codex share one file so edits made by either agent stay in sync.
+shared = os.path.join(home, ".codex/AGENTS.md")
+claude = os.path.join(home, ".claude/CLAUDE.md")
+os.makedirs(os.path.dirname(shared), exist_ok=True)
+os.makedirs(os.path.dirname(claude), exist_ok=True)
+if not (os.path.exists(shared) and os.path.exists(claude)
+        and os.path.samefile(shared, claude)):
+    instructions = []
+    for path in (shared, claude):
+        try:
+            with open(path) as f:
+                rest = managed.sub("", f.read()).strip("\n")
+        except FileNotFoundError:
+            continue
+        if rest and rest not in instructions:
+            instructions.append(rest)
+    with open(shared, "w") as f:
+        f.write("\n\n".join(instructions))
+    if os.path.lexists(claude):
+        # Keep the original file (or link) when migrating an existing volume.
+        backup = claude + ".before-shared"
+        suffix = 1
+        while os.path.lexists(backup):
+            backup = claude + f".before-shared.{suffix}"
+            suffix += 1
+        os.rename(claude, backup)
+    os.symlink(os.path.relpath(shared, os.path.dirname(claude)), claude)
+
 for rel in TARGETS:
     path = os.path.join(home, rel)
     try:
