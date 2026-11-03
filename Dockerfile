@@ -146,5 +146,7 @@ RUN chmod +x /usr/local/bin/start-t3 /usr/local/bin/drop-file-cache \
 WORKDIR /data/workspaces
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
+# Railway sends SIGTERM when replacing a deployment. Treat its conventional
+# exit status (128 + 15) as a clean stop; preserve all other failure statuses.
+ENTRYPOINT ["/usr/bin/tini", "-e", "143", "--"]
 CMD ["/usr/local/bin/start-t3"]
