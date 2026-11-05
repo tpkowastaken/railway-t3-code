@@ -1,4 +1,4 @@
-FROM node:24-bookworm@sha256:e7add2a490bb17d97b485b8641bd88455fff7839ade0f5eba493c3508124d413
+FROM node:24-bookworm@sha256:994ed664b2644b1b186516daaa1fb7aa93a1e717da2a0ff17094c765d5dbfde1
 
 # Pinned versions: every deploy is the same build. .github/workflows/bump-versions.yml
 # moves these (and the base image above) to the latest stable releases daily.
