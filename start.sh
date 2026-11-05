@@ -186,7 +186,23 @@ echo "Pair a device at https://<your-domain>/railway-pair"
 
 # `t3 serve` prints a one-time admin token + QR at boot. Pairing goes through
 # /railway-pair instead, so keep the token out of the deploy logs.
-exec setpriv --reuid=1000 --regid=1000 --init-groups \
+setpriv --reuid=1000 --regid=1000 --init-groups \
   env HOME="$HOME" USER=t3 LOGNAME=t3 SHELL=/bin/bash \
   t3 serve --host 0.0.0.0 --port 3773 "$WORKSPACE_DIR" \
-  > >(sed -u -e '/^Token: /d' -e 's/token=[^ "&]*/token=<redacted>/g' -e '/^[ █▀▄]*$/d') 2>&1
+  > >(sed -u -e '/^Token: /d' -e 's/token=[^ "&]*/token=<redacted>/g' -e '/^[ █▀▄]*$/d') 2>&1 &
+t3_pid=$!
+
+# Railway stops a replaced deployment with SIGTERM (tini forwards it here). T3
+# shuts down gracefully but exits non-zero, which Railway reports as a crash, so
+# pass the signal on, let T3 finish, and report a requested stop as clean.
+stopping=0
+trap 'stopping=1; kill -TERM "$t3_pid" 2>/dev/null || true' TERM INT
+status=0
+wait "$t3_pid" || status=$?
+# A trapped signal interrupts `wait`; wait again for T3 to actually exit.
+while kill -0 "$t3_pid" 2>/dev/null; do wait "$t3_pid" || status=$?; done
+if [ "$stopping" = 1 ]; then
+  echo "T3 Code stopped (exit status $status after SIGTERM)"
+  exit 0
+fi
+exit "$status"
