@@ -1,4 +1,4 @@
-FROM node:24-bookworm@sha256:994ed664b2644b1b186516daaa1fb7aa93a1e717da2a0ff17094c765d5dbfde1
+FROM node:24-bookworm@sha256:8fa96264f302f58bbb13aa7339c541547b56975766ce956c875da149452a3e40
 
 # Pinned versions: every deploy is the same build. .github/workflows/bump-versions.yml
 # moves these (and the base image above) to the latest stable releases daily.
@@ -6,7 +6,7 @@ FROM node:24-bookworm@sha256:994ed664b2644b1b186516daaa1fb7aa93a1e717da2a0ff1709
 ARG T3_VERSION=0.1.7
 ARG T3_SHA256=c089892bf7922e2e73c6f44a5d1ea125c99f70e378c18361cbbed2fba1920e6c
 ARG CLAUDE_CODE_VERSION=2.1.318
-ARG CODEX_VERSION=0.166.0
+ARG CODEX_VERSION=0.167.0
 ARG OPENCODE_VERSION=2.2.5
 
 ENV DEBIAN_FRONTEND=noninteractive
