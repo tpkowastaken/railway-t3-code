@@ -3,11 +3,11 @@ FROM node:24-bookworm@sha256:8fa96264f302f58bbb13aa7339c541547b56975766ce956c875
 # Pinned versions: every deploy is the same build. .github/workflows/bump-versions.yml
 # moves these (and the base image above) to the latest stable releases daily.
 # T3: version + sha256 of t3-<v>-linux-x64.tar.gz from the release's SHA256SUMS.
-ARG T3_VERSION=0.1.7
-ARG T3_SHA256=c089892bf7922e2e73c6f44a5d1ea125c99f70e378c18361cbbed2fba1920e6c
-ARG CLAUDE_CODE_VERSION=2.1.319
+ARG T3_VERSION=0.1.8
+ARG T3_SHA256=b9c49dc00c23fbbc5961bdaff2d88e556d96c8dbd638c4501e2937c70650a9e5
+ARG CLAUDE_CODE_VERSION=2.1.322
 ARG CODEX_VERSION=0.167.0
-ARG OPENCODE_VERSION=2.2.6
+ARG OPENCODE_VERSION=2.2.7
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
